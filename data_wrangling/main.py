@@ -21,17 +21,32 @@ def welcome():
 
 
 @app.post("/process-data")
-def process_data(use_polars: bool = False):
+def process_data(use_polars: bool = False, url: str = None):
     if use_polars:
-        df, load_time, agg_time = polars_loading_time(sheet_name="Year 2010-2011")
-        df = clean_df_pl(df_pl=df)
-        result = aggregate_polars(df=df)
-        return {"processed_data": result.to_dicts(), "load_time": load_time, "Aggregate_time": agg_time}
+        if url != None:
+            df, load_time, agg_time = polars_loading_time(sheet_name="Year 2010-2011",url=url)
+            df = clean_df_pl(df_pl=df)
+            result = aggregate_polars(df=df)
+            return {"processed_data": result.to_dicts(), "load_time": load_time, "Aggregate_time": agg_time}
+
+        else:
+            df, load_time, agg_time = polars_loading_time(sheet_name="Year 2010-2011")
+            df = clean_df_pl(df_pl=df)
+            result = aggregate_polars(df=df)
+            return {"processed_data": result.to_dicts(), "load_time": load_time, "Aggregate_time": agg_time}
     else:
-        df, load_time, agg_time = pandas_loading_time(sheet_name="Year 2010-2011")
-        df = clean_df_pd(df_pd=df)
-        result = aggregate_pandas(df)
-        return {"processed_data": result.to_dict(orient="records"), "load_time": load_time, "Aggregate_time": agg_time}
+        if url !=None:
+            df, load_time, agg_time = pandas_loading_time(sheet_name="Year 2010-2011", url=url)
+            df = clean_df_pd(df_pd=df)
+            result = aggregate_pandas(df)
+            return {"processed_data": result.to_dict(orient="records"), "load_time": load_time, "Aggregate_time": agg_time}
+
+        else:
+            df, load_time, agg_time = pandas_loading_time(sheet_name="Year 2010-2011")
+            df = clean_df_pd(df_pd=df)
+            result = aggregate_pandas(df)
+            return {"processed_data": result.to_dict(orient="records"), "load_time": load_time,"Aggregate_time": agg_time}
+
 
 
 PARQUET_FILE_PATH = "processed_data.parquet"
