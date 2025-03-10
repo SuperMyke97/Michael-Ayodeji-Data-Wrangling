@@ -1,0 +1,26 @@
+[project]
+name = "data-wrangling"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "SuperMyke97",email = "96381792+SuperMyke97@users.noreply.github.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas (>=2.2.3,<3.0.0)",
+    "polars (>=1.24.0,<2.0.0)",
+    "fastapi (>=0.115.11,<0.116.0)",
+    "pytest (>=8.3.5,<9.0.0)",
+    "uvicorn (>=0.34.0,<0.35.0)",
+    "fastexcel (>=0.13.0,<0.14.0)",
+    "openpyxl (>=3.1.5,<4.0.0)",
+    "matplotlib (>=3.10.1,<4.0.0)",
+    "seaborn (>=0.13.2,<0.14.0)",
+    "miceforest (>=6.0.3,<7.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
