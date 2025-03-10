@@ -9,7 +9,8 @@ import os
 import pyarrow as pa
 import pyarrow.parquet as pq
 import fastparquet as fp
-import tracemalloc
+import pandas as pd
+import polars as pl
 
 app = FastAPI()
 
@@ -50,11 +51,8 @@ async def download_parquet():
     """Endpoint to download the processed data in Parquet format."""
     if not os.path.exists(PARQUET_FILE_PATH):
         raise HTTPException(status_code=404, detail="Parquet file not found. Process data first.")
-    df, _, __ = pandas_loading_time(sheet_name="Year 2010-2011")
-    df = clean_df_pd(df_pd=df)
+    df, _, __ = polars_loading_time(sheet_name="Year 2010-2011")
+    df = clean_df_pl(df_pl=df)
     result = aggregate_polars(df)
-    fp.write(PARQUET_FILE_PATH, result)
-    return FileResponse(PARQUET_FILE_PATH, media_type="application/octet-stream", filename="processed_data.parquet")
-
-tracemalloc.start()
-download_parquet()
+    result.write_parquet(PARQUET_FILE_PATH)
+    return {"message": "File saved as processed_data.parquet"}
